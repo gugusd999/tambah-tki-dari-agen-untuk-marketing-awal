@@ -205,19 +205,20 @@ class Agen_tambah_tki extends MX_Controller{
                         <td>".$no."</td>
                         <td>".$value->tgl_to_agen."</td>
                         <td>".$ambil_nama_group_agen."</td>
-                        <td>".$value->tgl_pauliu."</td>
-                        <td>".$value->tgl_inter."</td>
-                        <td>
+                        <td class='text-center'>
                             <button
                              onclick='ubahdata(".'"'.$value->tgl_to_agen.'","'.$value->tgl_pauliu.'","'.$value->tgl_inter.'","'.$value->grup_to_agen.'","'.$value->nama_agen.'"'.")' type='button' class='btn btn-info margin-5'>
                                 ubah Data
-                            </button><br>
+                            </button>
                             <button
                              onclick='tampiltkikirimbio(".'"'.$value->tgl_to_agen.'","'.$key.'","'.$value->tgl_to_agen.'"'.")' type='button' class='btn btn-info margin-5'>
                                 lihat
-                            </button><br>
+                            </button>
                             <button type='button' onclick='hapusalldatatoagen(".'"'.$value->tgl_to_agen.'"'.")' class='btn btn-danger tampilDatanya margin-5'>
                                 Hapus
+                            </button> 
+                            <button type='button' onclick='printpertgltoagen(".'"'.$value->tgl_to_agen.'"'.")' class='btn btn-primary tampilDatanya margin-5'>
+                                Print
                             </button>
                         </td>
                     </tr>

@@ -325,8 +325,6 @@ input:checked[type="checkbox"]:before
                           <th>No</th>
                           <th>Tanggal Kirim Bio</th>
                           <th>Nama Group</th>
-                          <th>Tanggal Pailiu</th>
-                          <th>Tanggal inter</th>
                           <th>#</th>
                         </tr>
                       </thead>
@@ -1017,6 +1015,13 @@ function keluarkandata(id, tgl, idmajikan)
     }
   });
 }
+
+  function printpertgltoagen(tgltoagen) {
+    var id_agen = "<?= $idagen; ?>";
+    location.href = "<?= site_url(); ?>/print_kirim_bio_3/print_data/"+tgltoagen+"/"+id_agen;
+  }
+
+
 
 </script>
 
