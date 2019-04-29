@@ -3,10 +3,10 @@
 class Agen_tambah_tki extends MX_Controller{
     public function __construct(){
             parent::__construct();
-            $this->load->model('modelku');           
-            $this->load->model('M_session'); 
+            $this->load->model('modelku');
+            $this->load->model('M_session');
     }
-    
+
     function majikan_tki($idagen = '0001'){
         $session = $this->M_session->get_session();
         if (!$session['session_userid'] && !$session['session_status']){
@@ -40,7 +40,7 @@ class Agen_tambah_tki extends MX_Controller{
 
 
     function simpan_data_ke_marka_biotoagen(){
-       
+
 
         echo "this page is active";
         echo "<br>";
@@ -81,27 +81,27 @@ class Agen_tambah_tki extends MX_Controller{
         // echo '<br>';
 
 
-        // var_dump($biodata);    
+        // var_dump($biodata);
 
 
 
         foreach ($biodata as $key => $id_biodata) {
 
-            $this->db->query("INSERT INTO 
-            marka_biotoagen (id_marka_bioagen, 
-            id_biodata, 
-            tgl_to_agen, 
-            nama_agen, 
-            grup_to_agen, 
-            nama_pabrik, 
-            tgl_pauliu, 
-            tgl_inter, 
+            $this->db->query("INSERT INTO
+            marka_biotoagen (id_marka_bioagen,
+            id_biodata,
+            tgl_to_agen,
+            nama_agen,
+            grup_to_agen,
+            nama_pabrik,
+            tgl_pauliu,
+            tgl_inter,
             tgldilepas) VALUES (
-                '', 
-                '$id_biodata', 
-                '$tgl_to_agen', 
-                '$nama_agen', 
-                '$group_to_agen', 
+                '',
+                '$id_biodata',
+                '$tgl_to_agen',
+                '$nama_agen',
+                '$group_to_agen',
                 '',
                 '$tgl_pauliu',
                 '$tgl_inter',
@@ -141,15 +141,13 @@ class Agen_tambah_tki extends MX_Controller{
         $kunci = $_POST['key'];
 
         if ($kunci == 'tabletglterbang') {
-        
+
             $data = $this->db->query("
-                SELECT 
+                SELECT
 
                     DISTINCT(tgl_to_agen),
                     nama_agen,
-                    grup_to_agen,
-                    tgl_pauliu,
-                    tgl_inter
+                    grup_to_agen
                 FROM
                     marka_biotoagen
                 WHERE
@@ -162,7 +160,7 @@ class Agen_tambah_tki extends MX_Controller{
 
         }elseif ($kunci == 'tampiltki') {
             $data = $this->db->query("
-                SELECT 
+                SELECT
 
                     DISTINCT(tgl_to_agen),
                     id_biodata,
@@ -175,7 +173,7 @@ class Agen_tambah_tki extends MX_Controller{
                     marka_biotoagen
                 WHERE
                     $where
-                AND 
+                AND
                     tgl_to_agen = '$filter3'
                 AND
                     tgldilepas = ''
@@ -187,7 +185,7 @@ class Agen_tambah_tki extends MX_Controller{
 
 
         $nilai_data = "";
-        
+
 
         if ($kunci == "tabletglterbang") {
             $no = 1;
@@ -195,7 +193,6 @@ class Agen_tambah_tki extends MX_Controller{
 
 
                 $ambil_nama_agen = $this->modelku->ambildatamod($value->nama_agen, "nama", "dataagen", "id_agen", "*" );
-                
                 $ambil_nama_group_agen = $this->modelku->ambildatamod($value->grup_to_agen, "nama", "datagroup", "id_group", "*" );
 
 
@@ -206,20 +203,25 @@ class Agen_tambah_tki extends MX_Controller{
                         <td>".$value->tgl_to_agen."</td>
                         <td>".$ambil_nama_group_agen."</td>
                         <td class='text-center'>
+
                             <button
-                             onclick='ubahdata(".'"'.$value->tgl_to_agen.'","'.$value->tgl_pauliu.'","'.$value->tgl_inter.'","'.$value->grup_to_agen.'","'.$value->nama_agen.'"'.")' type='button' class='btn btn-info margin-5'>
-                                ubah Data
-                            </button>
-                            <button
+                             type='button'
                              onclick='tampiltkikirimbio(".'"'.$value->tgl_to_agen.'","'.$key.'","'.$value->tgl_to_agen.'"'.")' type='button' class='btn btn-info margin-5'>
                                 lihat
                             </button>
-                            <button type='button' onclick='hapusalldatatoagen(".'"'.$value->tgl_to_agen.'"'.")' class='btn btn-danger tampilDatanya margin-5'>
+
+                            <button
+                             type='button'
+                             onclick='hapusalldatatoagen(".'"'.$value->tgl_to_agen.'"'.")' class='btn btn-danger tampilDatanya margin-5'>
                                 Hapus
-                            </button> 
-                            <button type='button' onclick='printpertgltoagen(".'"'.$value->tgl_to_agen.'"'.")' class='btn btn-primary tampilDatanya margin-5'>
+                            </button>
+
+                            <button
+                             type='button'
+                             onclick='printpertgltoagen(".'"'.$value->tgl_to_agen.'"'.")' class='btn btn-primary tampilDatanya margin-5'>
                                 Print
                             </button>
+
                         </td>
                     </tr>
 
@@ -227,11 +229,7 @@ class Agen_tambah_tki extends MX_Controller{
 
                 $no++;
             }
-
-
         exit($nilai_data);
-
-
         }
 
 
@@ -241,17 +239,26 @@ class Agen_tambah_tki extends MX_Controller{
             foreach ($data as $key => $value) {
 
                 $nama_tki = $this->modelku->ambildatamod($value->id_biodata, "nama", "personal", "id_biodata", "nama" );
-                
-                $nama_majikan = $this->modelku->ambildatamod($value->nama_pabrik, "nama", "datamajikan", "id_majikan", "nama");
 
+                if (is_numeric($value->nama_pabrik)) {
+                  $nama_majikan = $this->modelku->ambildatamod($value->nama_pabrik, "nama", "datamajikan", "id_majikan", "nama");
+                }else{
+                  $nama_majikan = $value->nama_pabrik;
+                }
                 $nilai_data .= "
 
                     <tr>
                         <td>".$no."</td>
+                        <td><button onclick='ubahmajikannya(".'"'.$value->id_biodata.'","'.$value->tgl_to_agen.'","'.$value->nama_agen.'"'.")' class='btn btn-info'>ubah majikan</button></td>
                         <td>".$value->id_biodata."</td>
                         <td>".$nama_tki."</td>
                         <td>".$nama_majikan."</td>
-                        <td><button onclick='ubahmajikannya(".'"'.$value->id_biodata.'","'.$value->tgl_to_agen.'","'.$value->nama_agen.'"'.")' class='btn btn-info'>ubah majikan</button></td>
+                        <td class='edit-spc'>
+                            <input class='edt-data datainput1' data-agen='".$value->nama_agen."' data-toagen='".$value->tgl_to_agen."' data-id='".$value->id_biodata."' input-tanggal' id='pauliu".$no."' type='text' disabled value='".$value->tgl_pauliu."'>
+                        </td>
+                        <td class='edit-spc'>
+                            <input class='edt-data datainput2' data-agen='".$value->nama_agen."' data-toagen='".$value->tgl_to_agen."' data-id='".$value->id_biodata."'  id='interview".$no."' type='text' disabled value='".$value->tgl_inter."'>
+                        </td>
                         <td class='text-center'>
                             <a class='btn btn-success margin-5' onclick='lepastki(".'"'.$value->id_biodata.'","'.$value->tgl_to_agen.'"'.")' >lepas</a>
                             <a class='btn btn-danger margin-5' onclick='hapustkidaridaftar(".'"'.$value->id_biodata.'","'.$value->tgl_to_agen.'","'.$value->nama_pabrik.'"'.")' >hapus</a>
@@ -261,7 +268,7 @@ class Agen_tambah_tki extends MX_Controller{
                 ";
 
                 $no++;
-            }   
+            }
 
         exit($nilai_data);
 
@@ -276,14 +283,14 @@ class Agen_tambah_tki extends MX_Controller{
         $tgl_pauliu = $_POST['editpauliu'];
         $tgl_inter = $_POST['editinterview'];
         $namaagen = $_POST['editnamaagen'];
-        
-    
+
+
         // echo $tgl_inter.' '.$tgl_pauliu.' '.$tgl_inter.' '.$idgroup;
 
-        $update = $this->db->query("UPDATE marka_biotoagen 
-        SET tgl_pauliu = '$tgl_pauliu', 
+        $update = $this->db->query("UPDATE marka_biotoagen
+        SET tgl_pauliu = '$tgl_pauliu',
         tgl_inter = '$tgl_inter'
-        WHERE tgl_to_agen = '$tgl_to_agen' 
+        WHERE tgl_to_agen = '$tgl_to_agen'
         AND grup_to_agen = '$idgroup'
         AND nama_agen = '$namaagen'
          ");
@@ -302,7 +309,7 @@ class Agen_tambah_tki extends MX_Controller{
     function ambildatasesiini(){
         $idagen =  $_POST['idagen'];
         $tgl = $_POST['tgl'];
-        
+
 
 
 
@@ -338,14 +345,14 @@ class Agen_tambah_tki extends MX_Controller{
 
 
         $filedata = "";
-        
+
         if (isset($_POST['key'])) {
-            if ($_POST['key'] == 'tambah1') 
+            if ($_POST['key'] == 'tambah1')
             {
 
                 foreach ($data as $key => $value) {
                     $filedata .= "
-                    
+
 
                     <label>
                         <input datacari='"."'".$value->id_biodata."'"."' type='checkbox' name='cekdata' value='".$value->id_biodata."' /> ".$value->id_biodata.' '.$value->nama."
@@ -365,7 +372,7 @@ class Agen_tambah_tki extends MX_Controller{
         }
 
 
-      
+
         exit($filedata);
 
     }
@@ -374,7 +381,7 @@ class Agen_tambah_tki extends MX_Controller{
     function ambildatamajikan(){
 
         if (isset($_POST['pencarian'])) {
-            $cari =  'AND nama LIKE "%'.strtoupper($_POST['pencarian']).'%"';   
+            $cari =  'AND nama LIKE "%'.strtoupper($_POST['pencarian']).'%"';
         }else{
             $cari = '';
         }
@@ -387,14 +394,14 @@ class Agen_tambah_tki extends MX_Controller{
 
 
         $data = $this->db->query("SELECT
-         * 
-         FROM datamajikan 
-         WHERE kode_majikan != '' 
-         AND nama != '' 
-         AND kode_agen = '$kode_agen' $cari 
-         ORDER BY nama 
+         *
+         FROM datamajikan
+         WHERE kode_majikan != ''
+         AND nama != ''
+         AND kode_agen = '$kode_agen' $cari
+         ORDER BY nama
          ASC ")->result();
-        
+
         $html = '';
         foreach ($data as $key => $value) {
             $html .= '
@@ -416,15 +423,15 @@ class Agen_tambah_tki extends MX_Controller{
         $nama_agen = $_POST['majikanawal'];
         $majikanubah = $_POST['majikanubah'];
 
-        // echo $idbio.' - '.$tgltoagen.' - '.$nama_agen.' - '.$majikanubah; 
+        // echo $idbio.' - '.$tgltoagen.' - '.$nama_agen.' - '.$majikanubah;
 
 
 
 
-        $update = $this->db->query("UPDATE marka_biotoagen 
-                                        SET nama_pabrik = '$majikanubah' 
-                                        WHERE tgl_to_agen = '$tgltoagen' 
-                                        AND id_biodata = '$idbio' 
+        $update = $this->db->query("UPDATE marka_biotoagen
+                                        SET nama_pabrik = '$majikanubah'
+                                        WHERE tgl_to_agen = '$tgltoagen'
+                                        AND id_biodata = '$idbio'
                                         AND nama_agen = '$nama_agen'
                                     ");
 
@@ -442,7 +449,7 @@ class Agen_tambah_tki extends MX_Controller{
         $idtki =  $_POST["idtki"];
         $tgldilepas = $_POST["tgldilepas"];
         $tgl = $_POST["tgl"];
-        
+
 
         $simpan = $this->db->query("UPDATE marka_biotoagen SET tgldilepas = '$tgldilepas' WHERE id_biodata = '$idtki' AND tgl_to_agen = '$tgl' ");
 
@@ -471,15 +478,15 @@ class Agen_tambah_tki extends MX_Controller{
 
     }
 
-    
+
     function hapusdataalltoagen()
     {
         $tgl = $_POST['tanggal'];
         $namaPabrik = $_POST['idmajikan'];
-        $hapus = $this->db->query("DELETE 
-                                    FROM 
-                                        marka_biotoagen 
-                                    where tgl_to_agen = '$tgl' 
+        $hapus = $this->db->query("DELETE
+                                    FROM
+                                        marka_biotoagen
+                                    where tgl_to_agen = '$tgl'
                                     AND nama_agen = '$namaPabrik'
         ");
 
@@ -524,26 +531,26 @@ class Agen_tambah_tki extends MX_Controller{
         }
 
         $total = $this->db->query("
-        SELECT 
-            * 
-        FROM marka_biotoagen 
-        WHERE 
-            nama_agen = '$idmajikan' 
+        SELECT
+            *
+        FROM marka_biotoagen
+        WHERE
+            nama_agen = '$idmajikan'
         AND tgldilepas != '' $pencarian  ")->result();
 
         $data = $this->db->query("
-        SELECT 
-            * 
-        FROM marka_biotoagen 
-            WHERE 
-        nama_agen = '$idmajikan' 
-        AND tgldilepas != '' $pencarian  
-        ORDER BY id_marka_bioagen 
-        DESC 
+        SELECT
+            *
+        FROM marka_biotoagen
+            WHERE
+        nama_agen = '$idmajikan'
+        AND tgldilepas != '' $pencarian
+        ORDER BY id_marka_bioagen
+        DESC
         limit $start, $limit ")->result();
-        
-        
-        
+
+
+
         $html = "";
 
         $angka = 1;
@@ -570,7 +577,7 @@ class Agen_tambah_tki extends MX_Controller{
 
         $json = array(
             "tabel"         => $html,
-            "limit"         => $limit, 
+            "limit"         => $limit,
             "start"         => $start,
             "render"        => $render,
             "banyakdata"    => count($total)
@@ -598,5 +605,44 @@ class Agen_tambah_tki extends MX_Controller{
 
 
     }
+
+
+
+    function update_data_marka_biotoagen(){
+
+        $id_biodata = $_POST['idBio'];
+        $datatoagen = $_POST['datatoagen'];
+        $dataagen = $_POST['dataagen'];
+        $tgl_pauliu = $_POST['tglpauliu'];
+
+        if ($_POST['key'] == 'pauliu') {
+
+          for ($i=0; $i < count($id_biodata) ; $i++) {
+            $this->db->query("UPDATE marka_biotoagen SET tgl_pauliu = '".$tgl_pauliu[$i]."' WHERE id_biodata = '".$id_biodata[$i]."' AND tgl_to_agen = '".$datatoagen[$i]."' AND nama_agen = '".$dataagen[$i]."'");
+          }
+
+        }elseif ($_POST['key'] == 'interview') {
+          for ($i=0; $i < count($id_biodata) ; $i++) {
+            $this->db->query("UPDATE marka_biotoagen SET tgl_inter = '".$tgl_pauliu[$i]."' WHERE id_biodata = '".$id_biodata[$i]."' AND tgl_to_agen = '".$datatoagen[$i]."' AND nama_agen = '".$dataagen[$i]."'");
+          }
+        }elseif ($_POST['key'] == 'pauliuone') {
+          $this->db->query("UPDATE marka_biotoagen SET tgl_pauliu = '".$tgl_pauliu."' WHERE id_biodata = '".$id_biodata."' AND tgl_to_agen = '".$datatoagen."' AND nama_agen = '".$dataagen."'");
+        }elseif ($_POST['key'] == 'interviewone') {
+          $this->db->query("UPDATE marka_biotoagen SET tgl_inter = '".$tgl_pauliu."' WHERE id_biodata = '".$id_biodata."' AND tgl_to_agen = '".$datatoagen."' AND nama_agen = '".$dataagen."'");
+        }
+
+        echo "disimpan";
+    }
+
+
+    function simpan_perubahan_pabrik(){
+      $ubah  = $this->db->query("UPDATE marka_biotoagen SET nama_pabrik = '".$_POST['nama_pabrik']."' WHERE id_biodata = '".$_POST['idbio']."' AND tgl_to_agen = '".$_POST['tgltoagen']."' AND  nama_agen = '".$_POST['kodeagen']."' ");
+      if ($ubah) {
+        echo "diubah";
+      }else{
+        echo "tidak jadi diubah";
+      }
+    }
+
 
 }

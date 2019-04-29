@@ -60,7 +60,7 @@
 }
 
 #lepastki{
-  z-index: 99999; 
+  z-index: 99999;
 }
 
 .select2-selection__choice{
@@ -156,7 +156,7 @@ input:checked[type="checkbox"]:before
 }
 
 .margin-5{
-  margin: 5px;
+  margin: 3px;
 }
 
 
@@ -183,7 +183,7 @@ input:checked[type="checkbox"]:before
   padding: 10px;
   border-radius: 20px;
   text-align: center;
-  box-shadow: 0 0 10px #777; 
+  box-shadow: 0 0 10px #777;
 }
 
 .box-menu
@@ -267,17 +267,87 @@ input:checked[type="checkbox"]:before
   background-color: #ddd;
 }
 
+table td, table th{
+  position: relative;
+  white-space: nowrap;
+}
+
+.modal-larges{
+  width: 95%;
+}
 
 
+.edit-data{
+  margin: 0;
+  padding: 3px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+
+}
+
+.edit-data:disabled
+{
+  background-color: transparent;
+}
+
+
+.edt
+{
+  display: block;
+  font-family: "verdana";
+  font-style: italic;
+  color: red;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+
+.edit-spc{
+  background-color: #7eeeed;
+  text-align: center;
+}
+
+.edit-spc > input{
+  border: none;
+  outline: none;
+  background: none;
+  min-width: 90%;
+  padding: 10px;
+  border-bottom: 1px dotted white;
+  text-align: center;
+}
+
+.edit-spc > label{
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: orange;
+
+}
+
+.edit-spc:hover > label
+{
+  display: flex;
+}
 
 </style>
+
 
 
 <div class="page-container">
     <div class="page-content">
       <div class="content-wrapper">
 
-        
+
         <div class="panel panel-info panel-bordered">
           <div class="panel-heading">
             <b><i><h3><?= $idagen.' '.$namamajikan; ?></h3></i></b>
@@ -302,7 +372,7 @@ input:checked[type="checkbox"]:before
             </div>
           </div>
 
-         </div> 
+         </div>
       </form>
 
 
@@ -318,7 +388,7 @@ input:checked[type="checkbox"]:before
                     </div>
                   </div>
                   <div class="panel-body">
-                    
+
                     <table class="table data1 table-bordered table-hover">
                       <thead>
                         <tr>
@@ -329,9 +399,9 @@ input:checked[type="checkbox"]:before
                         </tr>
                       </thead>
                       <tbody>
-                        
+
                       </tbody>
-                    </table>                    
+                    </table>
 
                   </div>
                 </div>
@@ -346,7 +416,7 @@ input:checked[type="checkbox"]:before
 <!-- Modal -->
 
 <div class="modal fade" id="kirim-bio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-larges" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -354,13 +424,30 @@ input:checked[type="checkbox"]:before
         <button class="btn btn-info" onclick="tambah1()">Tambah Tki</button>
       </div>
       <div class="modal-body">
-        <table class="table table-bordered data2">
-          <thead>
-            
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
+        <div style="overflow-x: auto">
+          <table class="table table-bordered data2">
+            <thead>
+              <tr>
+                <th rowspan="2">No</th>
+                <th rowspan="2">#</th>
+                <th rowspan="2">ID - TKI</th>
+                <th rowspan="2">Nama</th>
+                <th rowspan="2">Nama majikan / Nama Perusahaan</th>
+                <th>tanggal pauliu</th>
+                <th>tanggal interview</th>
+                <th rowspan="2">#</th>
+              </tr>
+              <tr>
+
+                <th class="edit-spc"><input class="datarow1" disabled type="text" placeholder="isi all"/></th>
+                <th class="edit-spc"><input class="datarow2" disabled type="text" placeholder="isi all"/></th>
+
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -401,13 +488,13 @@ input:checked[type="checkbox"]:before
           <h4 class="modal-title" id="myModalLabel">tambahkan Tki</h4>
         </div>
         <div class="modal-body">
-          
+
           <div class="form-group">
             <input type="text" class="form-control pencarian-tki" placeholder="cari tki ...">
           </div>
 
           <ol class="list-multiple">
-            
+
           </ol>
 
           <select class="simpantkilist" name="biodata[]" multiple="multiple">
@@ -432,10 +519,10 @@ input:checked[type="checkbox"]:before
     <div class="box-menu box-md">
       <span class="judul">Tambahkan TKI</span>
       <form method="POST" action="<?= site_url(); ?>/agen_tambah_tki/simpan_data_ke_marka_biotoagen">
-        
+
               <div class="row">
                   <div class="col-lg-12 text-left">
-                      
+
 
                     <input type="hidden" name="idagen" value="<?= $idagen; ?>">
 
@@ -445,11 +532,11 @@ input:checked[type="checkbox"]:before
                         <label for="pailu">Tanggal Pauliu :</label>
                         <input type="" id="pailu" class="form-control input-tanggal" name="tgl_to_agen" placeholder="tahun.bulan.hari">
                       </div>
-                      
+
                       <div class="form-group">
                       <label for="bio">Tambahkan TKI :</label>
                       <select id="bio" class="js-example-basic-multiple daftartki" name="biodata[]" multiple="multiple">
-                        
+
                       </select>
                       </div>
 
@@ -459,7 +546,7 @@ input:checked[type="checkbox"]:before
 
                    </div>
 
-                  
+
                   </div>
               </div>
 
@@ -493,7 +580,6 @@ input:checked[type="checkbox"]:before
 </div>
 
 
-
 <div class="full-menu" id="ubahmajikannya">
   <div class="box-shadow">
     <div class="box-menu box-ls">
@@ -501,7 +587,7 @@ input:checked[type="checkbox"]:before
       <div class="form-group">
           <input class="form-control cari-majikan" type="text" name="" placeholder="cari data ...">
           <div class="list" id="data-list">
-            
+
           </div>
       </div>
     </div>
@@ -531,13 +617,13 @@ input:checked[type="checkbox"]:before
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
 
-        <div class="text-center">  
+        <div class="text-center">
         <ul class="pagination pagination-lepas">
-          
+
         </ul>
         </div>
 
@@ -546,7 +632,28 @@ input:checked[type="checkbox"]:before
   </div>
 </div>
 
-
+<div class="modal fade" id="ubahmajikan2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Tambahkan Nama Perusahaan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input type="hidden" name="idbio" value="">
+          <input type="hidden" name="tgltoagen" value="">
+          <input type="hidden" name="kodeagen" value="">
+          <input type="text" class="form-control" name="nama_pabrik" value="" placeholder="nama perusahaan">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary simpannamapabrik">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -555,8 +662,167 @@ input:checked[type="checkbox"]:before
 <script type="text/javascript" src="<?= base_url(); ?>gugus/jquery_mask/jquery.inputmask.bundle.js"></script>
 
 <script>
-    
-    
+
+
+    $('body').dblclick(function(e) {
+        var target = $(e.target);
+        if(target.is('.datainput1')) {
+          target.removeAttr("disabled").focus().css({"background-color":"white", "border-radius": "3px", "box-shadow":"inset 0 0 5px rgba(0,0,0,0.5)"});
+          target.inputmask({"mask": "9999.99.99"});
+          var  id     = target.attr("data-id");
+          var  toagen = target.attr("data-toagen");
+          var  agen   = target.attr("data-agen");
+
+          target.keypress(function(event){
+              var keycode = (event.keyCode ? event.keyCode : event.which);
+              if (keycode == '13') {
+                target.prop("disabled","true").css({"background":"none", "border-radius":"none", "box-shadow":"none"});
+                var isiData = target.val();
+
+                $.ajax({
+                  url: "<?= site_url(); ?>/agen_tambah_tki/update_data_marka_biotoagen",
+                  method: "POST",
+                  dataType: "text",
+                  data: {
+                    key: "pauliuone",
+                    idBio : id,
+                    datatoagen: toagen,
+                    dataagen: agen,
+                    tglpauliu: isiData
+                  }, success:function(response){
+                  }
+                })
+
+              }
+          });
+        }
+    });
+
+    $('body').dblclick(function(e) {
+        var target = $(e.target);
+        if(target.is('.datainput2')) {
+          target.removeAttr("disabled").focus().css({"background-color":"white", "border-radius": "3px", "box-shadow":"inset 0 0 5px rgba(0,0,0,0.5)"});
+          target.inputmask({"mask": "9999.99.99"});
+          var  id     = target.attr("data-id");
+          var  toagen = target.attr("data-toagen");
+          var  agen   = target.attr("data-agen");
+
+          target.keypress(function(event){
+              var keycode = (event.keyCode ? event.keyCode : event.which);
+              if (keycode == '13') {
+                target.prop("disabled","true").css({"background":"none", "border-radius":"none", "box-shadow":"none"});
+                var isiData = target.val();
+
+                $.ajax({
+                  url: "<?= site_url(); ?>/agen_tambah_tki/update_data_marka_biotoagen",
+                  method: "POST",
+                  dataType: "text",
+                  data: {
+                    key: "interviewone",
+                    idBio : id,
+                    datatoagen: toagen,
+                    dataagen: agen,
+                    tglpauliu: isiData
+                  }, success:function(response){
+                  }
+                })
+
+              }
+          });
+        }
+    });
+
+    $('body').dblclick(function(e) {
+        var target = $(e.target);
+        if(target.is('.datarow1')) {
+          target.inputmask({"mask": "9999.99.99"});
+          target.removeAttr("disabled").focus().css({"background-color":"white", "border-radius": "3px", "box-shadow":"inset 0 0 5px rgba(0,0,0,0.5)"});
+          $(".datainput1").css({"background-color":"white", "border-radius": "3px", "box-shadow":"inset 0 0 5px rgba(0,0,0,0.5)"}).removeAttr("value");
+          target.keyup(function(){
+            $(".datainput1").val(target.val());
+          });
+
+          target.keypress(function(event){
+              var keycode = (event.keyCode ? event.keyCode : event.which);
+              if (keycode == '13') {
+                target.prop("disabled","true").css({"background":"none", "border-radius":"none", "box-shadow":"none"});
+                  $(".datainput1").prop("disabled","true").css({"background":"none", "border-radius":"none", "box-shadow":"none"});
+                  var dataditrima = [];
+                  var dataid = [];
+                  var datatoagen = [];
+                  var dataagen = [];
+                  $(".datainput1").each(function(){
+                    dataditrima.push($(this).val());
+                    dataid.push($(this).attr('data-id'));
+                    datatoagen.push($(this).attr('data-toagen'));
+                    dataagen.push($(this).attr('data-agen'));
+                  })
+
+
+
+                  $.ajax({
+                    url: "<?= site_url(); ?>/agen_tambah_tki/update_data_marka_biotoagen",
+                    method: "POST",
+                    dataType: "text",
+                    data: {
+                      key: "pauliu",
+                      idBio : dataid,
+                      datatoagen: datatoagen,
+                      dataagen: dataagen,
+                      tglpauliu: dataditrima
+                    }, success:function(response){
+                    }
+                  })
+              }
+          });
+        }
+    });
+
+
+    $('body').dblclick(function(e) {
+        var target = $(e.target);
+        if(target.is('.datarow2')) {
+          target.inputmask({"mask": "9999.99.99"});
+          target.removeAttr("disabled").focus().css({"background-color":"white", "border-radius": "3px", "box-shadow":"inset 0 0 5px rgba(0,0,0,0.5)"});
+          $(".datainput2").css({"background-color":"white", "border-radius": "3px", "box-shadow":"inset 0 0 5px rgba(0,0,0,0.5)"}).removeAttr("value");
+          target.keyup(function(){
+            $(".datainput2").val(target.val());
+          });
+
+          target.keypress(function(event){
+              var keycode = (event.keyCode ? event.keyCode : event.which);
+              if (keycode == '13') {
+                target.prop("disabled","true").css({"background":"none", "border-radius":"none", "box-shadow":"none"});
+                  $(".datainput2").prop("disabled","true").css({"background":"none", "border-radius":"none", "box-shadow":"none"});
+                  var dataditrima = [];
+                  var dataid = [];
+                  var datatoagen = [];
+                  var dataagen = [];
+                  $(".datainput2").each(function(){
+                    dataditrima.push($(this).val());
+                    dataid.push($(this).attr('data-id'));
+                    datatoagen.push($(this).attr('data-toagen'));
+                    dataagen.push($(this).attr('data-agen'));
+                  })
+
+                  $.ajax({
+                    url: "<?= site_url(); ?>/agen_tambah_tki/update_data_marka_biotoagen",
+                    method: "POST",
+                    dataType: "text",
+                    data: {
+                      key: "interview",
+                      idBio : dataid,
+                      datatoagen: datatoagen,
+                      dataagen: dataagen,
+                      tglpauliu: dataditrima
+                    }, success:function(response){
+                    }
+                  })
+              }
+          });
+        }
+    });
+
     function showtkidilepas(){
         $("#tampiltkidilepas").css({"display":"absolute", "display":"flex"});
     }
@@ -577,22 +843,30 @@ input:checked[type="checkbox"]:before
 
 
         var id_majikan = "<?= $idagen; ?>";
-        $("#kirim-bio").modal("hide");
-        $("#ubahmajikannya").css({"display":"absolute", "display":"flex"});
-        $.ajax({
-          url: "<?= site_url(); ?>/agen_tambah_tki/ambildatamajikan",
-          method: "POST",
-          dataType: "text",
-          data: {
-            idmajikan: id_majikan,
-            pencarian: search,
-            idbio: idbio,
-            tgltoagen: tgltoagen,
-            kodeagen: kodeagen
-          },success:function(response){
-            $("#data-list").html(response);
-          }
-        })
+
+        if (idbio.substr(0,2) == 'MF' || idbio.substr(0,2) == 'FF') {
+          $("#kirim-bio").modal("hide");
+          $("#ubahmajikannya").css({"display":"absolute", "display":"flex"});
+          $.ajax({
+            url: "<?= site_url(); ?>/agen_tambah_tki/ambildatamajikan",
+            method: "POST",
+            dataType: "text",
+            data: {
+              idmajikan: id_majikan,
+              pencarian: search,
+              idbio: idbio,
+              tgltoagen: tgltoagen,
+              kodeagen: kodeagen
+            },success:function(response){
+              $("#data-list").html(response);
+            }
+          })
+        }else {
+          $("#ubahmajikan2").modal("show");
+          $("input[name=idbio]").val(idbio);
+          $("input[name=tgltoagen]").val(tgltoagen);
+          $("input[name=kodeagen]").val(kodeagen);
+        }
 
     }
 
@@ -678,7 +952,7 @@ input:checked[type="checkbox"]:before
 
 
   function panggildatatable(){
-    
+
     var idagen = "<?= $idagen; ?>";
 
     $.ajax({
@@ -715,6 +989,12 @@ input:checked[type="checkbox"]:before
         $(".data2 tbody").html(response);
         buatdataSesiini(data1);
 
+
+        $(".edt").dblclick(function () {
+          var data = $(this).attr("data");
+          $("."+data).removeAttr("disabled").focus();
+        })
+
       }
     });
   }
@@ -737,7 +1017,7 @@ function buatdataSesiini(data1)
       sessionStorage.setItem("tgltoagen", jsonparse.tgltoagen );
       sessionStorage.setItem("tglpauliu", jsonparse.tglpauliu );
       sessionStorage.setItem("tglinter", jsonparse.tglinter );
-    } 
+    }
   })
 }
 
@@ -844,15 +1124,15 @@ function hapustkidaridaftar(idtki, tgl, idmajikan){
 
 
         $('#kirim-bio').modal('hide');
-        
 
-        setTimeout(function(){ 
+
+        setTimeout(function(){
           tampiltkikirimbio("","",tgl);
         }, 500);
 
         panggildatatable()
       }
-    })        
+    })
   }
 
 
@@ -862,7 +1142,7 @@ function hapustkidaridaftar(idtki, tgl, idmajikan){
     var idmajikan = "<?= $idagen; ?>";
     var r = confirm("apakah anda yakin akan menghapus data ini ?");
     if (r == true) {
-      
+
       $.ajax({
         url: "<?= site_url();  ?>/agen_tambah_tki/hapusdataalltoagen",
         method: "POST",
@@ -903,7 +1183,7 @@ function panggildatadilepas(pages = '')
     data: {
       render : render,
       pages : pages,
-      pencarian : sessionStorage.getItem("pencariandilepas"), 
+      pencarian : sessionStorage.getItem("pencariandilepas"),
       idmajikan: datamajikan
     },success:function(response){
 
@@ -917,7 +1197,7 @@ function panggildatadilepas(pages = '')
       var pembagihalaman = dataNya.render;
 
       var bagihalaman = Number(BanyakData)/pembagihalaman;
-      
+
       var banyakhalaman = Math.ceil(bagihalaman);
 
       paginationdilepas(banyakhalaman);
@@ -928,7 +1208,7 @@ function panggildatadilepas(pages = '')
         // paginationdilepas(jsondata.banyak_data);
     }
   })
-} 
+}
 
 
 $("#pencariandilepas").keyup(function(){
@@ -988,14 +1268,14 @@ function lihathalamandilepas(key, aksinya){
     var hasil = Number(nilai)+4;
 
     sessionStorage.setItem("dataslice", hasil);
-    paginationdilepas(key);    
+    paginationdilepas(key);
   }else{
 
     var nilai = sessionStorage.getItem("dataslice");
     var hasil = Number(nilai)-4;
 
     sessionStorage.setItem("dataslice", hasil);
-    paginationdilepas(key);    
+    paginationdilepas(key);
   }
 
 }
@@ -1021,12 +1301,34 @@ function keluarkandata(id, tgl, idmajikan)
     location.href = "<?= site_url(); ?>/print_kirim_bio_3/print_data/"+tgltoagen+"/"+id_agen;
   }
 
+    $('body').click(function(e) {
+        var target = $(e.target);
+        if(target.is('.simpannamapabrik')) {
+          var idbio = $("input[name=idbio]").val();
+          var tgltoagen = $("input[name=tgltoagen]").val();
+          var kodeagen = $("input[name=kodeagen]").val();
+          var nama_pabrik = $("input[name=nama_pabrik]").val();
+
+          $.ajax({
+              url : "<?= site_url(); ?>/agen_tambah_tki/simpan_perubahan_pabrik",
+              method: "POST",
+              dataType: "text",
+              data: {
+                idbio: idbio,
+                tgltoagen: tgltoagen,
+                kodeagen: kodeagen,
+                nama_pabrik: nama_pabrik
+              }, success:function(response){
+                alert(response);
+                $(".ubahmajikan2").modal("hide");
+                $(".kirim_bio").modal("hide");
+                tampiltkikirimbio(tgltoagen, '', tgltoagen);
+              }
+          });
+
+
+        }
+    });
 
 
 </script>
-
-
-
-
-
-
