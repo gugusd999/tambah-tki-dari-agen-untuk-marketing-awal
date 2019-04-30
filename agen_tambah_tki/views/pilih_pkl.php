@@ -339,6 +339,15 @@ table td, table th{
   display: flex;
 }
 
+
+input[type="search"]
+{
+  padding: 3px;
+  margin-bottom: 10px;
+  outline: none;
+  border-radius: 3px;
+}
+
 </style>
 
 
@@ -389,7 +398,7 @@ table td, table th{
                   </div>
                   <div class="panel-body">
 
-                    <table class="table data1 table-bordered table-hover">
+                    <table id="datatable1" class="table data1 table-bordered table-hover">
                       <thead>
                         <tr>
                           <th>No</th>
@@ -655,13 +664,76 @@ table td, table th{
   </div>
 </div>
 
-
-
-
 <script type="text/javascript" src="<?= base_url(); ?>gugus/select2/select2.min.js"></script>
 <script type="text/javascript" src="<?= base_url(); ?>gugus/jquery_mask/jquery.inputmask.bundle.js"></script>
 
 <script>
+
+
+$(function($){
+
+    $('<input type="search" class="cari-data" placeholder="cari datanya ...">').insertBefore($("#datatable1"));
+    $('<ul class="pagination"></ul>').insertAfter($("#datatable1"));
+
+    var idagen = "<?= $idagen; ?>";
+    $.ajax({
+      url: "<?= site_url(); ?>/agen_tambah_tki/tampilkan_distik_markabio/"+idagen,
+      method: "POST",
+      dataType: "text",
+      data: {
+        key: "tabletglterbang"
+      },success:function(response){
+        var datasaya = JSON.parse(response);
+        $(".data1 tbody").html(datasaya.data);
+        $(".pagination").html(datasaya.pagination);
+      }
+    });
+})
+
+$(function($){
+  $(".cari-data").keyup(function(){
+    var idagen = "<?= $idagen; ?>";
+    $.ajax({
+      url: "<?= site_url(); ?>/agen_tambah_tki/tampilkan_distik_markabio/"+idagen,
+      method: "POST",
+      dataType: "text",
+      data: {
+        key: "tabletglterbang",
+        cari: $(this).val()
+      },success:function(response){
+        var datasaya = JSON.parse(response);
+        $(".data1 tbody").html(datasaya.data);
+        $(".pagination").html(datasaya.pagination);
+      }
+    });
+  });
+});
+
+
+$('body').click(function(e){
+  var idagen = "<?= $idagen; ?>";
+  var target = $(e.target);
+  if (target.is('.pagin')) {
+    var text = target.text();
+    var data = target.attr("data");
+    $.ajax({
+      url: "<?= site_url(); ?>/agen_tambah_tki/tampilkan_distik_markabio/"+idagen,
+      method: "POST",
+      dataType: "text",
+      data: {
+        key: data,
+        cari: $(this).val(),
+        halaman: text
+      },success:function(response){
+        var datasaya = JSON.parse(response);
+        $(".data1 tbody").html(datasaya.data);
+        $(".pagination").html(datasaya.pagination);
+      }
+    });
+  }
+
+})
+
 
 
     $('body').dblclick(function(e) {
@@ -928,17 +1000,11 @@ table td, table th{
 
 
     $(document).ready(function() {
-      table_serverside();
+      panggildatadilepas();
       $(".input-tanggal").inputmask({"mask": "9999.99.99"});
       $('.js-example-basic-multiple').select2();
       $('.js-example-basic-single').select2();
     });
-
-    function table_serverside(){
-      panggildatatable();
-      panggildatadilepas();
-    }
-
 
     function ubahdata(toagen, pauliu, inter, majikan, namaagen){
       $("#ubahdata").css({"display":"absolute", "display":"flex"});
@@ -948,24 +1014,6 @@ table td, table th{
       $("input[name=editmajikan]").val(majikan);
       $("input[name=editnamaagen]").val(namaagen);
     }
-
-
-
-  function panggildatatable(){
-
-    var idagen = "<?= $idagen; ?>";
-
-    $.ajax({
-      url: "<?= site_url(); ?>/agen_tambah_tki/tampilkan_distik_markabio/"+idagen,
-      method: "POST",
-      dataType: "text",
-      data: {
-        key: "tabletglterbang"
-      },success:function(response){
-        $(".data1 tbody").html(response);
-      }
-    });
-  }
 
 
 // modal show  untuk menampikan data tki sesuai dengan tanggal to agen___________________________
@@ -1330,5 +1378,8 @@ function keluarkandata(id, tgl, idmajikan)
         }
     });
 
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
 
 </script>

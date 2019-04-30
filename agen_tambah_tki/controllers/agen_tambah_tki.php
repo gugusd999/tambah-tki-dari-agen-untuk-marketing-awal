@@ -76,13 +76,6 @@ class Agen_tambah_tki extends MX_Controller{
         }
 
 
-        // echo '<br>'.$idagen;
-        // echo '<br>'.$tgl_to_agen;
-        // echo '<br>';
-
-
-        // var_dump($biodata);
-
 
 
         foreach ($biodata as $key => $id_biodata) {
@@ -126,6 +119,11 @@ class Agen_tambah_tki extends MX_Controller{
             $where2 = "";
         }
 
+        $cari = "";
+        if (isset($_POST['cari'])) {
+          $cari = "AND tgl_to_agen LIKE '%".$_POST['cari']."%'";
+        }
+
         if (isset($_POST['filter2'])) {
             $filter2 = $_POST['filter2'];
         }
@@ -134,8 +132,15 @@ class Agen_tambah_tki extends MX_Controller{
             $filter3 = $_POST['filter3'];
         }
 
+        $limit = "LIMIT 0, 5";
 
-        $where = "nama_agen = ".$key;
+        $pagin = 0;
+        if (isset($_POST['halaman'])) {
+            $pagin = ($_POST['halaman']-1)*5;
+            $limit = "LIMIT ".$pagin.", 5";
+        }
+
+        $where = "nama_agen = ".$key." ".$cari;
 
 
         $kunci = $_POST['key'];
@@ -144,7 +149,23 @@ class Agen_tambah_tki extends MX_Controller{
 
             $data = $this->db->query("
                 SELECT
+                    DISTINCT(tgl_to_agen),
+                    nama_agen,
+                    grup_to_agen
+                FROM
+                    marka_biotoagen
+                WHERE
+                    $where
+                AND
+                    tgldilepas = ''
+                    $cari
+                ORDER BY
+                    id_marka_bioagen DESC
+                    $limit
+                    ")->result();
 
+            $total_data = $this->db->query("
+                SELECT
                     DISTINCT(tgl_to_agen),
                     nama_agen,
                     grup_to_agen
@@ -156,7 +177,10 @@ class Agen_tambah_tki extends MX_Controller{
                     tgldilepas = ''
                 ORDER BY
                     id_marka_bioagen DESC
-                    ")->result();
+            ")->result();
+
+
+
 
         }elseif ($kunci == 'tampiltki') {
             $data = $this->db->query("
@@ -188,7 +212,7 @@ class Agen_tambah_tki extends MX_Controller{
 
 
         if ($kunci == "tabletglterbang") {
-            $no = 1;
+            $no = 1+$pagin;
             foreach ($data as $key => $value) {
 
 
@@ -203,6 +227,7 @@ class Agen_tambah_tki extends MX_Controller{
                         <td>".$value->tgl_to_agen."</td>
                         <td>".$ambil_nama_group_agen."</td>
                         <td class='text-center'>
+                            <button type='button' class='btn btn-default' data-toggle='tooltip' data-placement='top' title='klik untuk ubah data tanggal kirim bio'>Tooltip on top</button>
 
                             <button
                              type='button'
@@ -229,7 +254,29 @@ class Agen_tambah_tki extends MX_Controller{
 
                 $no++;
             }
-        exit($nilai_data);
+
+            $halaman = count($total_data);
+            $halaman = ceil($halaman/5);
+            $pagination = "";
+            if ($pagin > 0) {
+              $pagination .= "<li><a class='pagin' data='tabletglterbang' href='#'><<</a></li>";
+            }
+            for ($i=0; $i < $halaman; $i++) {
+              $pagination .= "<li><a class='pagin' data='tabletglterbang' href='#'>".($i+1)."</a></li>";
+            }
+
+            if ($pagin < (($halaman*5)-5) ) {
+              $pagination .= "<li><a class='pagin' data='tabletglterbang' href='#'>>></a></li>";
+            }
+
+
+
+            $exitdata = array(
+                'data' => $nilai_data,
+                'pagination' => $pagination,
+            );
+
+        exit(json_encode($exitdata));
         }
 
 
@@ -601,9 +648,6 @@ class Agen_tambah_tki extends MX_Controller{
         }else{
             echo "tidak jadi";
         }
-
-
-
     }
 
 
